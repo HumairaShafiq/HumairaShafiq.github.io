@@ -1,5 +1,5 @@
 .border{
-    border: 2px solid  red;
+    border: 2px solid red;
     margin: 3px;
 }
 
@@ -39,7 +39,6 @@
 .p-1{
     padding: 10px;
 }
-
 
 /* For Webkit browsers (e.g., Chrome, Safari) */
 ::-webkit-scrollbar {
