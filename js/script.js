@@ -152,7 +152,7 @@ async function main() {
   document.querySelector(".seekbar").addEventListener("click", (e) => {
     let percent = e.target.getBoundingClientRect().width * 100;
     document.querySelector(".circle").style.left = percent + "%";
-    currentAudio.currentTime = (currentAudio.duration * percent) / 100;
+    currentAudio.currentTime = ((currentAudio.duration) * percent) / 100;
   });
   // Add an event listener for hamburger
   document.querySelector(".hamburger").addEventListener("click", () => {
