@@ -66,8 +66,8 @@ const playAudio = (track, pause = false) => {
     play.src = "img/pause.svg";
   }
 
-  document.querySelector(".sinfo").innerHTML = decodeURI(track);
-  document.querySelector(".stime").innerHTML = "00:00 / 00:00";
+  document.querySelector(".sinfo").innerHTML = decodeURI(track)
+  document.querySelector(".stime").innerHTML = "00:00 / 00:00"
 };
 
 async function displayAlbums() {
