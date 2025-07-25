@@ -51,7 +51,7 @@ async function getAudios(folder) {
   Array.from(
     document.querySelector(".sList").getElementsByTagName("li")
   ).forEach((e) => {
-    e.addEventListener("click", (element) => {
+    e.addEventListener("click", element => {
       playAudio(e.querySelector(".info").firstElementChild.innerHTML.trim())
     })
   })
