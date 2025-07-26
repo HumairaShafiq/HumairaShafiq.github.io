@@ -18,8 +18,10 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getAudios(folder) {
   currFolder = folder;
-  let a = await fetch(`/audios/${folder}/`);
+  let a = await fetch(`/${folder}/`);
+  console.log(a);
   let response = await a.text();
+  console.log(a.text());
   let div = document.createElement("div");
   div.innerHTML = response;
   let as = div.getElementsByTagName("a");
@@ -28,6 +30,7 @@ async function getAudios(folder) {
     const element = as[index];
     if (element.href.endsWith(".mp3")) {
       audios.push(element.href.split(`/${folder}/`)[1])
+      console.log(audios.push(element.href.split(`/${folder}/`)[1]));
     }
   }
 
@@ -46,6 +49,7 @@ async function getAudios(folder) {
                     <img class="invert" src="img/play.svg" alt="play">
                   </div>
          </li>`;
+    console.log(sUL.innerHTML);
   }
   //   Attach an event listener to each audio
   Array.from(
