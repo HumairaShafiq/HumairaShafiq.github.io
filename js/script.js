@@ -19,7 +19,7 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getAudios(folder) {
   currFolder = folder;
-  let a = await fetch(`/audios/${folder}/`);
+  let a = await fetch(`/${folder}/`);
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
@@ -38,7 +38,7 @@ async function getAudios(folder) {
   for (const audio of audios) {
     sUL.innerHTML =
       sUL.innerHTML +
-      `<li> <img class="invert" src="img/audio.svg" alt="audio">
+      `<li> <img class="invert" width="34" src="img/audio.svg" alt="audio">
                   <div class="info">
                     <div>${audio.replaceAll("%20", "")}</div>
                     <div>Sohaib</div>
@@ -53,7 +53,7 @@ async function getAudios(folder) {
   Array.from(
     document.querySelector(".sList").getElementsByTagName("li")
   ).forEach((e) => {
-    e.addEventListener("click", (element) => {
+    e.addEventListener("click", element => {
       playAudio(e.querySelector(".info").firstElementChild.innerHTML.trim());
     });
   });
@@ -74,7 +74,7 @@ const playAudio = (track, pause = false) => {
 };
 
 async function displayAlbums() {
-  let a = await fetch(`http://127.0.0.1:5500/audios/`);
+  let a = await fetch(`/audios/`);
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
@@ -118,8 +118,8 @@ async function displayAlbums() {
 
   //Load the playlist whenever card is clicked
   Array.from(document.getElementsByClassName("card")).forEach((e) => {
-    e.addEventListener("click", async (item) => {
-      audios = await getAudios(`/audios/${item.currentTarget.dataset.folder}`);
+    e.addEventListener("click", async item => {
+      audios = await getAudios(`audios/${item.currentTarget.dataset.folder}`);
       playAudio(audios[0]);
     });
   });
@@ -127,7 +127,7 @@ async function displayAlbums() {
 
 async function main() {
   // Get the list of all the audios
-  await getAudios();
+  await getAudios("audios/ncs");
   playAudio(audios[0], true);
 
   // Display all the albums on the page
@@ -219,6 +219,7 @@ async function main() {
         .getElementsByTagName("input")[0].value = 10;
     }
   });
+
 }
 
 main();
