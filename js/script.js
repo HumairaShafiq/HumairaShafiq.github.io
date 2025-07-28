@@ -1,3 +1,4 @@
+console.log("Lets write JavaScript");
 let currentAudio = new Audio();
 let audios;
 let currFolder;
@@ -18,10 +19,8 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getAudios(folder) {
   currFolder = folder;
-  let a = await fetch(`/${folder}/`);
-  console.log(a);
+  let a = await fetch(`/audios/${folder}/`);
   let response = await a.text();
-  console.log(a.text());
   let div = document.createElement("div");
   div.innerHTML = response;
   let as = div.getElementsByTagName("a");
@@ -29,17 +28,17 @@ async function getAudios(folder) {
   for (let index = 0; index < as.length; index++) {
     const element = as[index];
     if (element.href.endsWith(".mp3")) {
-      audios.push(element.href.split(`/${folder}/`)[1])
-      console.log(audios.push(element.href.split(`/${folder}/`)[1]));
+      audios.push(element.href.split(`/${folder}/`)[1]);
     }
   }
 
   // Show all the audios in the playlist
-  let sUL = document.querySelector(".sList").getElementsByTagName("ul")[0]
-  sUL.innerHTML = ""
+  let sUL = document.querySelector(".sList").getElementsByTagName("ul")[0];
+  sUL.innerHTML = "";
   for (const audio of audios) {
-    sUL.innerHTML = sUL.innerHTML +
-      `<li> <img class="invert" width="34 src="img/audio.svg" alt="audio">
+    sUL.innerHTML =
+      sUL.innerHTML +
+      `<li> <img class="invert" src="img/audio.svg" alt="audio">
                   <div class="info">
                     <div>${audio.replaceAll("%20", "")}</div>
                     <div>Sohaib</div>
@@ -49,35 +48,35 @@ async function getAudios(folder) {
                     <img class="invert" src="img/play.svg" alt="play">
                   </div>
          </li>`;
-    console.log(sUL.innerHTML);
   }
   //   Attach an event listener to each audio
   Array.from(
     document.querySelector(".sList").getElementsByTagName("li")
   ).forEach((e) => {
-    e.addEventListener("click", element => {
-      playAudio(e.querySelector(".info").firstElementChild.innerHTML.trim())
-    })
-  })
+    e.addEventListener("click", (element) => {
+      playAudio(e.querySelector(".info").firstElementChild.innerHTML.trim());
+    });
+  });
 
-  return audios
+  return audios;
 }
 
 const playAudio = (track, pause = false) => {
-  currentAudio.src = `/${currFolder}/` + track
+  // let audio = new Audio("/audios/" + track)
+  currentAudio.src = `/${currFolder}/` + track;
   if (!pause) {
     currentAudio.play();
     play.src = "img/pause.svg";
   }
 
-  document.querySelector(".sinfo").innerHTML = decodeURI(track)
-  document.querySelector(".stime").innerHTML = "00:00 / 00:00"
+  document.querySelector(".sinfo").innerHTML = decodeURI(track);
+  document.querySelector(".stime").innerHTML = "00:00 / 00:00";
 };
 
 async function displayAlbums() {
-  let a = await fetch(`/audios/`);
+  let a = await fetch(`http://127.0.0.1:5500/audios/`);
   let response = await a.text();
-  let div = document.createElement("div")
+  let div = document.createElement("div");
   div.innerHTML = response;
   let anchors = div.getElementsByTagName("a");
   let cardContainer = document.querySelector(".cardContainer");
@@ -85,11 +84,13 @@ async function displayAlbums() {
   for (let index = 0; index < array.length; index++) {
     const e = array[index];
     if (e.href.includes("/audios") && !e.href.includes(".htaccess")) {
-      let folder = e.href.split("/").slice(-2)[0]
+      let folder = e.href.split("/").slice(-2)[0];
       // Get the metadata of the folder
       let a = await fetch(`/audios/${folder}/info.json`);
       let response = await a.json();
-      cardContainer.innerHTML = cardContainer.innerHTML +
+      console.log(response);
+      cardContainer.innerHTML =
+        cardContainer.innerHTML +
         `<div data-folder="${folder}" class="card">
               <div class="play">
                 <svg
@@ -116,10 +117,9 @@ async function displayAlbums() {
   }
 
   //Load the playlist whenever card is clicked
-  Array.from(document.getElementsByClassName("card")).forEach(e => {
+  Array.from(document.getElementsByClassName("card")).forEach((e) => {
     e.addEventListener("click", async (item) => {
-      console.log("Fetching Audios")
-      audios = await getAudios(`audios/${item.currentTarget.dataset.folder}`);
+      audios = await getAudios(`/audios/${item.currentTarget.dataset.folder}`);
       playAudio(audios[0]);
     });
   });
@@ -127,10 +127,11 @@ async function displayAlbums() {
 
 async function main() {
   // Get the list of all the audios
-  await getAudios("/audios/");
+  await getAudios("ncs");
   playAudio(audios[0], true);
+
   // Display all the albums on the page
-  await displayAlbums();
+  displayAlbums();
 
   // Attach an event listener to play, next and previous
   play.addEventListener("click", () => {
@@ -156,7 +157,7 @@ async function main() {
   document.querySelector(".seekbar").addEventListener("click", (e) => {
     let percent = e.target.getBoundingClientRect().width * 100;
     document.querySelector(".circle").style.left = percent + "%";
-    currentAudio.currentTime = ((currentAudio.duration) * percent) / 100;
+    currentAudio.currentTime = (currentAudio.duration * percent) / 100;
   });
   // Add an event listener for hamburger
   document.querySelector(".hamburger").addEventListener("click", () => {
