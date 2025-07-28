@@ -127,7 +127,7 @@ async function displayAlbums() {
 
 async function main() {
   // Get the list of all the audios
-  await getAudios("ncs");
+  await getAudios();
   playAudio(audios[0], true);
 
   // Display all the albums on the page
